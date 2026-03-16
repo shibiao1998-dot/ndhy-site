@@ -527,12 +527,14 @@ body.scroll-locked { overflow: hidden; }
   border: 1px solid var(--color-border-subtle);
 }
 .contrast-panel.dim {
-  opacity: 0.8;
-  background: var(--color-bg);
+  opacity: 1;
+  background: rgba(10,10,15,0.8);
+  border: 1px dashed rgba(58,58,85,0.3);
 }
 .contrast-panel.bright {
   background: var(--color-bg-surface);
-  border-color: var(--color-border);
+  border: 1px solid rgba(129,140,248,0.2);
+  box-shadow: 0 0 40px rgba(129,140,248,0.03);
 }
 .panel-heading {
   font-size: var(--fs-h2);
@@ -541,11 +543,11 @@ body.scroll-locked { overflow: hidden; }
   padding-bottom: var(--sp-3);
   border-bottom: 1px solid var(--color-border-subtle);
 }
-.dim .panel-heading { color: #f5f5f5; border-bottom-style: dashed; }
-.bright .panel-heading { color: #f5f5f5; }
+.dim .panel-heading { color: #c0c0c0; border-bottom-style: dashed; }
+.bright .panel-heading { color: var(--color-text-bright); }
 
 .flow-step {
-  padding: var(--sp-2) 0;
+  padding: var(--sp-3) 0;
   font-size: var(--fs-small);
   color: #e0e0e0;
   position: relative;
@@ -559,15 +561,15 @@ body.scroll-locked { overflow: hidden; }
   color: var(--color-text-dim);
 }
 .flow-step:first-child::before { content: ''; }
-.dim .flow-step { border-left: 1px dashed var(--color-border-subtle); }
-.bright .flow-step { border-left: 2px solid var(--color-accent); }
+.dim .flow-step { color: #999; border-left: 1px dashed rgba(58,58,85,0.3); }
+.bright .flow-step { color: var(--color-text); border-left: 2px solid var(--color-accent); }
 .bright .flow-step::before { color: var(--color-accent); }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2);
-  margin-top: var(--sp-4);
+  margin-top: var(--sp-6);
   padding-top: var(--sp-3);
   border-top: 1px solid var(--color-border-subtle);
 }
@@ -604,19 +606,20 @@ body.scroll-locked { overflow: hidden; }
 .cross-sections {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-12);
+  gap: var(--sp-16);
   max-width: var(--max-w);
   margin: 0 auto;
 }
 .cross-section {
   border: 1px solid var(--color-border-subtle);
+  border-left: 3px solid var(--color-accent);
   border-radius: 8px;
   padding: var(--sp-6);
   overflow: hidden;
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-slower) var(--ease-out),
-              transform var(--dur-slower) var(--ease-out);
+  transform: translateY(32px);
+  transition: opacity 800ms cubic-bezier(0.22,1,0.36,1),
+              transform 800ms cubic-bezier(0.22,1,0.36,1);
 }
 .cross-section.visible {
   opacity: 1;
@@ -643,10 +646,10 @@ body.scroll-locked { overflow: hidden; }
   display: flex;
   align-items: baseline;
   gap: var(--sp-3);
-  opacity: 0.05;
-  transform: translateY(8px);
-  transition: opacity var(--dur-slow) var(--ease-out),
-              transform var(--dur-slow) var(--ease-out);
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 800ms cubic-bezier(0.22,1,0.36,1),
+              transform 800ms cubic-bezier(0.22,1,0.36,1);
 }
 .cs-row.visible { opacity: 1; transform: translateY(0); }
 .cs-row .level {
@@ -712,13 +715,19 @@ body.scroll-locked { overflow: hidden; }
   font-size: var(--fs-h2);
   color: #f5f5f5;
   line-height: var(--lh-relaxed);
-  margin-bottom: var(--sp-8);
+  margin-bottom: 24px;
   opacity: 0.05;
   transform: translateY(16px);
   transition: opacity var(--dur-slower) var(--ease-out),
               transform var(--dur-slower) var(--ease-out);
 }
 .vision-para.visible { opacity: 1; transform: translateY(0); }
+/* Rhythm: turn paragraph gets extra top breathing room */
+.vision-para.vp-turn { margin-top: var(--sp-8); }
+/* Rhythm: climax paragraph gets generous spacing */
+.vision-para.vp-climax { margin-top: var(--sp-12); margin-bottom: var(--sp-12); }
+/* "答案是——组织" text-shadow */
+.vision-answer { text-shadow: 0 0 30px rgba(129,140,248,0.2); }
 .vision-divider {
   width: 0;
   height: 1px;
@@ -727,7 +736,7 @@ body.scroll-locked { overflow: hidden; }
   margin: var(--sp-8) 0;
   transition: width var(--dur-slow) var(--ease-out);
 }
-.vision-divider.visible { width: 120px; }
+.vision-divider.visible { width: min(120px, 30vw); }
 .vision-final {
   font-size: var(--fs-h1);
   font-weight: var(--fw-bold);
@@ -739,7 +748,7 @@ body.scroll-locked { overflow: hidden; }
    BLOCK 7 — The Call (行动号召)
    ═══════════════════════════════════════════ */
 #cta {
-  min-height: 80vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -752,7 +761,15 @@ body.scroll-locked { overflow: hidden; }
   font-size: var(--fs-h1);
   font-weight: var(--fw-bold);
   color: #f5f5f5;
+  margin-bottom: var(--sp-4);
+}
+.cta-subtitle {
+  font-size: var(--fs-body);
+  color: var(--color-text-muted);
   margin-bottom: var(--sp-8);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .cta-buttons {
   display: flex;
@@ -805,14 +822,15 @@ footer {
   border-top: 1px solid var(--color-border-subtle);
 }
 .footer-brand {
-  font-size: var(--fs-body);
-  font-weight: var(--fw-bold);
-  color: #999;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: #777;
+  letter-spacing: 0.05em;
   margin-bottom: var(--sp-2);
 }
 .footer-stats {
-  font-size: var(--fs-small);
-  color: #999;
+  font-size: var(--fs-xs);
+  color: #666;
   margin-bottom: var(--sp-2);
   letter-spacing: var(--ls-wide);
 }
@@ -910,8 +928,8 @@ section#cta .btn-primary { background: #818cf8; color: #0a0a14; font-weight: 600
 section#cta .btn-ghost { border: 2px solid #818cf8; color: #a5b4fc; }
 /* Block 7: Footer */
 footer .footer-meta { color: #818cf8; }
-footer .footer-brand { color: #aaa; }
-footer .footer-stats { color: #aaa; }
+footer .footer-brand { color: #777; }
+footer .footer-stats { color: #666; }
 
 /* ═══════════════════════════════════════════
    V3.2 — Block 3/4 card borders
@@ -919,7 +937,31 @@ footer .footer-stats { color: #aaa; }
 
 /* Block 3: Timeline step-detail cards */
 #process .step-detail { border: 1px solid #2a2a40; }
-/* Block 4: Contrast panels */
+/* Block 4: Contrast panels — enhanced contrast */
+section#contrast .contrast-panel.dim {
+  opacity: 1;
+  background: rgba(10,10,15,0.8);
+  border: 1px dashed rgba(58,58,85,0.3);
+}
+section#contrast .dim .flow-step {
+  color: #999;
+  border-left: 1px dashed rgba(58,58,85,0.3);
+}
+section#contrast .dim .panel-heading {
+  color: #c0c0c0;
+}
+section#contrast .contrast-panel.bright {
+  background: var(--color-bg-surface);
+  border: 1px solid rgba(129,140,248,0.2);
+  box-shadow: 0 0 40px rgba(129,140,248,0.03);
+}
+section#contrast .bright .panel-heading {
+  color: var(--color-text-bright);
+}
+section#contrast .bright .flow-step {
+  color: var(--color-text);
+  border-left: 2px solid var(--color-accent);
+}
 #contrast .contrast-panel { border: 1px solid #2a2a40; }
 
 /* ═══════════════════════════════════════════
@@ -946,7 +988,7 @@ section#vision hr,
 section#vision .vision-divider {
   border-color: #818cf8;
   opacity: 0.6;
-  width: 120px;
+  width: min(120px, 30vw);
 }
 section#vision .vision-final,
 section#vision .reveal-text .statement {
@@ -1455,14 +1497,14 @@ section#vision .reveal-text .statement {
 <!-- ═══════════════ BLOCK 6: The Bigger Picture ═══════════════ -->
 <section id="vision" aria-label="更大的图景">
   <div class="vision-content">
-    <p class="vision-para">AI 不缺能力。</p>
-    <p class="vision-para">GPT-4 能写代码。Claude 能做分析。<br>Gemini 能搜索。Midjourney 能设计。</p>
-    <p class="vision-para">但它们是散兵。<br>散兵赢不了战争。</p>
+    <p class="vision-para vp-setup">AI 不缺能力。</p>
+    <p class="vision-para vp-setup">GPT-4 能写代码。Claude 能做分析。<br>Gemini 能搜索。Midjourney 能设计。</p>
+    <p class="vision-para vp-turn">但它们是散兵。<br>散兵赢不了战争。</p>
     <div class="vision-divider"></div>
-    <p class="vision-para">2026 年，AI 行业的真正问题不是<br>"模型够不够强"，<br>而是<br>"怎么把强大的模型组织成可靠的生产力"。</p>
-    <p class="vision-para">答案不是更好的 Prompt。<br>答案不是更大的上下文窗口。<br><span style="color: #a5b4fc; font-weight: 700;">答案是——组织。</span></p>
-    <p class="vision-para">给 AI 角色。给 AI 标准。给 AI 记忆。<br>给 AI 纪律。给 AI 协作方式。给 AI 进化机制。</p>
-    <p class="vision-para">像管理人类团队一样管理 AI 团队。<br>然后你会发现：<br>一个人 + AI 组织 ≈ 一个完整的产品公司。</p>
+    <p class="vision-para vp-setup">2026 年，AI 行业的真正问题不是<br>"模型够不够强"，<br>而是<br>"怎么把强大的模型组织成可靠的生产力"。</p>
+    <p class="vision-para vp-climax">答案不是更好的 Prompt。<br>答案不是更大的上下文窗口。<br><span class="vision-answer" style="color: #a5b4fc; font-weight: 700;">答案是——组织。</span></p>
+    <p class="vision-para vp-setup">给 AI 角色。给 AI 标准。给 AI 记忆。<br>给 AI 纪律。给 AI 协作方式。给 AI 进化机制。</p>
+    <p class="vision-para vp-setup">像管理人类团队一样管理 AI 团队。<br>然后你会发现：<br>一个人 + AI 组织 ≈ 一个完整的产品公司。</p>
     <div class="vision-divider"></div>
     <p class="vision-para vision-final" style="font-weight: bold;">这不是未来。<br>从 2026 年 3 月 10 日开始，这就是我们每天的日常。</p>
   </div>
@@ -1471,6 +1513,7 @@ section#vision .reveal-text .statement {
 <!-- ═══════════════ BLOCK 7: The Call ═══════════════ -->
 <section id="cta" aria-label="行动号召">
   <h2 class="cta-title fade-in">想看看这个组织是怎么运转的？</h2>
+  <p class="cta-subtitle fade-in">所有源码、角色设定、技能代码，全部公开。</p>
   <div class="cta-buttons fade-in">
     <a href="mailto:shibiao1998@gmail.com" class="btn-primary" target="_blank" aria-label="发送邮件联系我们">跟我们聊聊</a>
     <a href="https://github.com/shibiao1998-dot/ndhy-site" class="btn-ghost" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 上关注我们">在 GitHub 上关注</a>
