@@ -390,36 +390,42 @@ body.scroll-locked { overflow: hidden; }
 .timeline {
   position: relative;
   display: flex;
-  align-items: flex-start;
-  gap: var(--sp-6);
-  overflow-x: auto;
-  padding: var(--sp-8) 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--sp-8) 0 var(--sp-8) var(--sp-8);
 }
 .timeline::before {
   content: '';
   position: absolute;
-  top: 28px;
-  left: 0;
-  right: 0;
-  height: 2px;
+  top: 0;
+  bottom: 0;
+  left: 27px;
+  width: 2px;
+  height: auto;
   background: var(--color-border);
 }
 .timeline-step {
-  flex: 0 0 160px;
   position: relative;
-  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  text-align: left;
   cursor: pointer;
+  padding-left: var(--sp-8);
+  padding-bottom: var(--sp-6);
+  width: 100%;
 }
 .step-dot {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background: var(--color-border);
-  margin: 20px auto var(--sp-3);
-  position: relative;
+  position: absolute;
+  left: -8px;
+  top: 4px;
+  margin: 0;
   z-index: 2;
+  flex-shrink: 0;
   transition: background var(--dur-normal) var(--ease-out),
               box-shadow var(--dur-normal) var(--ease-out);
 }
@@ -427,8 +433,29 @@ body.scroll-locked { overflow: hidden; }
   background: var(--color-accent);
   box-shadow: 0 0 8px var(--color-accent-glow);
 }
-.step-emoji { font-size: var(--fs-h2); margin-bottom: var(--sp-1); }
-.step-role { font-size: var(--fs-small); color: var(--color-text-muted); margin-bottom: var(--sp-1); }
+/* Step card: emoji left + content right */
+.step-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  width: 100%;
+  padding: var(--sp-4);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: border-color var(--dur-normal) var(--ease-out),
+              box-shadow var(--dur-normal) var(--ease-out);
+}
+.timeline-step:hover .step-content {
+  border-color: var(--color-accent-dim);
+  box-shadow: 0 0 12px rgba(129,140,248,0.1);
+}
+.timeline-step.lit .step-content {
+  border-color: var(--color-accent-dim);
+}
+.step-emoji { font-size: 1.5rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+.step-text { flex: 1; min-width: 0; }
+.step-role { font-size: var(--fs-small); color: var(--color-text-muted); margin-bottom: 2px; }
 .step-action { font-size: var(--fs-small); color: #e0e0e0; font-weight: var(--fw-medium); }
 .step-meta { font-size: var(--fs-xs); color: var(--color-text-dim); margin-top: var(--sp-1); }
 
@@ -468,30 +495,13 @@ body.scroll-locked { overflow: hidden; }
   margin-top: var(--sp-3);
 }
 
-/* Vertical timeline (mobile) */
+/* Vertical timeline responsive adjustments (mobile) */
 @media (max-width: 600px) {
   .timeline {
-    flex-direction: column;
-    overflow-x: visible;
-    padding-left: var(--sp-8);
-    gap: 0;
+    padding-left: var(--sp-6);
   }
-  .timeline::before {
-    top: 0; bottom: 0;
-    left: 27px; right: auto;
-    width: 2px; height: auto;
-  }
-  .timeline-step {
-    flex: none;
-    text-align: left;
-    padding-left: var(--sp-8);
-    padding-bottom: var(--sp-6);
-  }
-  .step-dot {
-    position: absolute;
-    left: -8px;
-    top: 4px;
-    margin: 0;
+  .step-content {
+    padding: var(--sp-3);
   }
 }
 
@@ -955,6 +965,7 @@ section#vision .reveal-text .statement {
 /* --- Block 3: Timeline cards brightness --- */
 .step-card,
 .step-summary,
+.step-content,
 #process .step-summary {
   background: #1a1a35;
   border: 1px solid #3a3a55;
@@ -1214,59 +1225,91 @@ section#vision .reveal-text .statement {
   <div class="timeline" role="list" aria-label="制作过程时间线">
     <article class="timeline-step" role="listitem" data-step="0">
       <div class="step-dot"></div>
-      <div class="step-emoji">👤</div>
-      <div class="step-role">老板</div>
-      <div class="step-action">写了一份设计方案</div>
-      <div class="step-meta">[待回填] · design-v3.md</div>
+      <div class="step-content">
+        <div class="step-emoji">👤</div>
+        <div class="step-text">
+          <div class="step-role">老板</div>
+          <div class="step-action">写了一份设计方案</div>
+          <div class="step-meta">[待回填] · design-v3.md</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="1">
       <div class="step-dot"></div>
-      <div class="step-emoji">📝</div>
-      <div class="step-role">技术文档专家</div>
-      <div class="step-action">策划全站内容文案</div>
-      <div class="step-meta">[待回填] · content-v3.md</div>
+      <div class="step-content">
+        <div class="step-emoji">📝</div>
+        <div class="step-text">
+          <div class="step-role">技术文档专家</div>
+          <div class="step-action">策划全站内容文案</div>
+          <div class="step-meta">[待回填] · content-v3.md</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="2">
       <div class="step-dot"></div>
-      <div class="step-emoji">🎨</div>
-      <div class="step-role">体验设计专家</div>
-      <div class="step-action">设计信息架构和交互体验</div>
-      <div class="step-meta">[待回填] · experience-design-v3.md</div>
+      <div class="step-content">
+        <div class="step-emoji">🎨</div>
+        <div class="step-text">
+          <div class="step-role">体验设计专家</div>
+          <div class="step-action">设计信息架构和交互体验</div>
+          <div class="step-meta">[待回填] · experience-design-v3.md</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="3">
       <div class="step-dot"></div>
-      <div class="step-emoji">🎨</div>
-      <div class="step-role">视觉设计专家</div>
-      <div class="step-action">视觉规范与设计 Token</div>
-      <div class="step-meta">[待回填] · visual-spec-v3.md</div>
+      <div class="step-content">
+        <div class="step-emoji">🎨</div>
+        <div class="step-text">
+          <div class="step-role">视觉设计专家</div>
+          <div class="step-action">视觉规范与设计 Token</div>
+          <div class="step-meta">[待回填] · visual-spec-v3.md</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="4">
       <div class="step-dot"></div>
-      <div class="step-emoji">🖥️</div>
-      <div class="step-role">前端开发专家</div>
-      <div class="step-action">实现完整页面</div>
-      <div class="step-meta">[待回填] · index.html</div>
+      <div class="step-content">
+        <div class="step-emoji">🖥️</div>
+        <div class="step-text">
+          <div class="step-role">前端开发专家</div>
+          <div class="step-action">实现完整页面</div>
+          <div class="step-meta">[待回填] · index.html</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="5">
       <div class="step-dot"></div>
-      <div class="step-emoji">🔍</div>
-      <div class="step-role">代码审查专家</div>
-      <div class="step-action">代码质量审查</div>
-      <div class="step-meta">[待回填] · REVIEW.md</div>
+      <div class="step-content">
+        <div class="step-emoji">🔍</div>
+        <div class="step-text">
+          <div class="step-role">代码审查专家</div>
+          <div class="step-action">代码质量审查</div>
+          <div class="step-meta">[待回填] · REVIEW.md</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="6">
       <div class="step-dot"></div>
-      <div class="step-emoji">🚀</div>
-      <div class="step-role">部署运维专家</div>
-      <div class="step-action">容器化部署 + GitHub</div>
-      <div class="step-meta">[待回填] · Dockerfile</div>
+      <div class="step-content">
+        <div class="step-emoji">🚀</div>
+        <div class="step-text">
+          <div class="step-role">部署运维专家</div>
+          <div class="step-action">容器化部署 + GitHub</div>
+          <div class="step-meta">[待回填] · Dockerfile</div>
+        </div>
+      </div>
     </article>
     <article class="timeline-step" role="listitem" data-step="7">
       <div class="step-dot"></div>
-      <div class="step-emoji">🏗️</div>
-      <div class="step-role">项目管理专家</div>
-      <div class="step-action">全程协调 8 位专家</div>
-      <div class="step-meta">[待回填]</div>
+      <div class="step-content">
+        <div class="step-emoji">🏗️</div>
+        <div class="step-text">
+          <div class="step-role">项目管理专家</div>
+          <div class="step-action">全程协调 8 位专家</div>
+          <div class="step-meta">[待回填]</div>
+        </div>
+      </div>
     </article>
   </div>
 
@@ -1840,6 +1883,13 @@ section#vision .reveal-text .statement {
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function() { isMobile = window.innerWidth <= 600; }, 150);
+  });
+
+  // ─── 隐藏待回填占位符 — 回填后删除此段 ───
+  document.querySelectorAll('*').forEach(function(el) {
+    if (el.children.length === 0 && el.textContent.indexOf('[待回填]') !== -1) {
+      el.style.display = 'none';
+    }
   });
 })();
 </script>
